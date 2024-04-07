@@ -1,0 +1,2 @@
+ALTER TABLE historico_pagamento
+ADD CONSTRAINT uk_pagamento_numero_tentativas UNIQUE (pagamento_id, numero_tentativas);

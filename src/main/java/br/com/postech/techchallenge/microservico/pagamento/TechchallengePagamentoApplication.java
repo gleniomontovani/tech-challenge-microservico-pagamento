@@ -4,10 +4,10 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TechchallengeMicroservicoPagamentoApplication {
+public class TechchallengePagamentoApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TechchallengeMicroservicoPagamentoApplication.class, args);
+		SpringApplication.run(TechchallengePagamentoApplication.class, args);
 	}
 
 }
