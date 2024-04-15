@@ -40,7 +40,7 @@ public class Pagamento implements Serializable{
 	private Long id;
 
 	@Column(name = "pedido_id", nullable = false)
-	private Long idPedido;
+	private Long numeroPedido;
 		
 	@Column(name = "data_pagamento", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime dataPagamento;

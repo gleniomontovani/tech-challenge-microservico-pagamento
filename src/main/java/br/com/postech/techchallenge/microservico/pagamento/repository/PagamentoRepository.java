@@ -12,7 +12,7 @@ import br.com.postech.techchallenge.microservico.pagamento.enums.StatusPagamento
 @Repository
 public interface PagamentoRepository extends JpaRepository<Pagamento, Long>{
 
-	Optional<Pagamento> findByPedidoId(Long numeroPedido);
+	Optional<Pagamento> findByNumeroPedido(Long numeroPedido);
 	
 	List<Pagamento> findByStatusPagamentoIn(List<StatusPagamentoEnum> statusPagamentos);
 }
