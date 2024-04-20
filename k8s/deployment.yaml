@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tech-challenge-microservico-pagamento
+  labels:
+    app: tech-challenge-microservico-pagamento
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tech-challenge-microservico-pagamento
+  template:
+    metadata:
+      labels:
+        app: tech-challenge-microservico-pagamento
+    spec:
+      containers:
+        - name: tech-challenge-microservico-pagamento
+          image: gleniomontovani/tech-challenge-microservico-pagamento:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8081
+          env:
+            - name: DATASOURCE_URL
+              value: jdbc:postgresql://${DB_ENDPOINT}/pagamentos
+            - name: DATASOURCE_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: tech-challenge-microservico-pagamento-config
+                  key: DATASOURCE_USERNAME  
+            - name: DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  key: DATASOURCE_PASSWORD
+                  name: tech-challenge-microservico-pagamento-secret            
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "500m"
+      restartPolicy: Always
+      imagePullSecrets:
+        - name: dockerhub-secret
+                        

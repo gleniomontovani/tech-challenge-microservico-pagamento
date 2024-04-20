@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: tech-challenge-microservico-pagamento-config
+  labels:
+    app: tech-challenge-microservico-pagamento
+data:
+  DATASOURCE_DB: pagamentos
+  DATASOURCE_USERNAME: postgres

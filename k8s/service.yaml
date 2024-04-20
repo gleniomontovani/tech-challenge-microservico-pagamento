@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: tech-challenge-microservico-pagamento-service
+  labels:
+    app: tech-challenge-microservico-pagamento
+spec:
+  selector:
+    app: tech-challenge-microservico-pagamento
+  ports:
+    - protocol: TCP
+      port: 8081
+      targetPort: 8081
+  type: ClusterIP
