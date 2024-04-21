@@ -1,9 +1,9 @@
-package br.com.postech.techchallenge.microservico.core.pagamento.service;
+package br.com.postech.techchallenge.microservico.pagamento.service;
 
 import java.util.List;
 
-import br.com.postech.techchallenge.microservico.core.pagamento.model.response.HistoricoPagamentoResponse;
-import br.com.postech.techchallenge.microservico.core.pagamento.model.response.PagamentoResponse;
+import br.com.postech.techchallenge.microservico.pagamento.model.response.HistoricoPagamentoResponse;
+import br.com.postech.techchallenge.microservico.pagamento.model.response.PagamentoResponse;
 
 public interface PagamentoService {
 	

@@ -1,4 +1,4 @@
-package br.com.postech.techchallenge.microservico.core.pagamento.service.impl;
+package br.com.postech.techchallenge.microservico.pagamento.service.impl;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,17 +7,17 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
-import br.com.postech.techchallenge.microservico.core.comum.converts.StatusPagamentoParaInteiroConverter;
-import br.com.postech.techchallenge.microservico.core.comum.enums.StatusPagamentoEnum;
-import br.com.postech.techchallenge.microservico.core.pagamento.entity.HistoricoPagamento;
-import br.com.postech.techchallenge.microservico.core.pagamento.entity.Pagamento;
-import br.com.postech.techchallenge.microservico.core.pagamento.model.response.HistoricoPagamentoResponse;
-import br.com.postech.techchallenge.microservico.core.pagamento.model.response.PagamentoResponse;
-import br.com.postech.techchallenge.microservico.core.pagamento.repository.HistoricoPagamentoRepository;
-import br.com.postech.techchallenge.microservico.core.pagamento.repository.PagamentoRepository;
-import br.com.postech.techchallenge.microservico.core.pagamento.service.PagamentoService;
-import br.com.postech.techchallenge.microservico.core.pedido.configuration.ModelMapperConfiguration;
-import br.com.postech.techchallenge.microservico.core.pedido.exception.NotFoundException;
+import br.com.postech.techchallenge.microservico.pagamento.configuration.ModelMapperConfiguration;
+import br.com.postech.techchallenge.microservico.pagamento.converts.StatusPagamentoParaInteiroConverter;
+import br.com.postech.techchallenge.microservico.pagamento.entity.HistoricoPagamento;
+import br.com.postech.techchallenge.microservico.pagamento.entity.Pagamento;
+import br.com.postech.techchallenge.microservico.pagamento.enums.StatusPagamentoEnum;
+import br.com.postech.techchallenge.microservico.pagamento.exception.NotFoundException;
+import br.com.postech.techchallenge.microservico.pagamento.model.response.HistoricoPagamentoResponse;
+import br.com.postech.techchallenge.microservico.pagamento.model.response.PagamentoResponse;
+import br.com.postech.techchallenge.microservico.pagamento.repository.HistoricoPagamentoRepository;
+import br.com.postech.techchallenge.microservico.pagamento.repository.PagamentoRepository;
+import br.com.postech.techchallenge.microservico.pagamento.service.PagamentoService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 

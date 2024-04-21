@@ -1,4 +1,4 @@
-package br.com.postech.techchallenge.microservico.core.pagamento;
+package br.com.postech.techchallenge.microservico.pagamento;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

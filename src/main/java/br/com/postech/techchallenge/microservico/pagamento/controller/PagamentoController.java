@@ -1,4 +1,4 @@
-package br.com.postech.techchallenge.microservico.core.pagamento.controller;
+package br.com.postech.techchallenge.microservico.pagamento.controller;
 
 import java.util.List;
 
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.postech.techchallenge.microservico.core.pagamento.model.response.HistoricoPagamentoResponse;
-import br.com.postech.techchallenge.microservico.core.pagamento.model.response.PagamentoResponse;
-import br.com.postech.techchallenge.microservico.core.pagamento.service.PagamentoService;
+import br.com.postech.techchallenge.microservico.pagamento.model.response.HistoricoPagamentoResponse;
+import br.com.postech.techchallenge.microservico.pagamento.model.response.PagamentoResponse;
+import br.com.postech.techchallenge.microservico.pagamento.service.PagamentoService;
 import lombok.RequiredArgsConstructor;
 
 @RestController

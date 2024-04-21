@@ -1,4 +1,4 @@
-package br.com.postech.techchallenge.microservico.core.pagamento.entity;
+package br.com.postech.techchallenge.microservico.pagamento.entity;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

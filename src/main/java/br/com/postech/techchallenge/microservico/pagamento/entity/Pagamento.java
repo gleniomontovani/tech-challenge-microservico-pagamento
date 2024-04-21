@@ -1,4 +1,4 @@
-package br.com.postech.techchallenge.microservico.core.pagamento.entity;
+package br.com.postech.techchallenge.microservico.pagamento.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -9,8 +9,8 @@ import java.util.List;
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
 
-import br.com.postech.techchallenge.microservico.core.comum.enums.StatusPagamentoEnum;
-import br.com.postech.techchallenge.microservico.core.comum.util.Constantes;
+import br.com.postech.techchallenge.microservico.pagamento.enums.StatusPagamentoEnum;
+import br.com.postech.techchallenge.microservico.pagamento.util.Constantes;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -45,7 +45,7 @@ public class Pagamento implements Serializable{
 	@Column(name = "data_pagamento", columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	private LocalDateTime dataPagamento;
 	
-	@Type(value = br.com.postech.techchallenge.microservico.core.comum.enums.AssociacaoType.class,
+	@Type(value = br.com.postech.techchallenge.microservico.pagamento.enums.AssociacaoType.class,
             parameters = {@Parameter(name = Constantes.ENUM_CLASS_NAME, value = "StatusPagamentoEnum")})
     @Column(name = "status_pagamento_id")
 	private StatusPagamentoEnum statusPagamento;

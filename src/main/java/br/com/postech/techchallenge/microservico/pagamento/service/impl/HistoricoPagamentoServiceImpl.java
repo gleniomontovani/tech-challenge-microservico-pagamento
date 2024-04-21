@@ -1,8 +1,8 @@
-package br.com.postech.techchallenge.microservico.core.pagamento.service.impl;
+package br.com.postech.techchallenge.microservico.pagamento.service.impl;
 
 import org.springframework.stereotype.Service;
 
-import br.com.postech.techchallenge.microservico.core.pagamento.service.HistoricoPagamentoService;
+import br.com.postech.techchallenge.microservico.pagamento.service.HistoricoPagamentoService;
 import lombok.RequiredArgsConstructor;
 
 @Service

@@ -1,4 +1,4 @@
-package br.com.postech.techchallenge.microservico.core.pagamento.model.response;
+package br.com.postech.techchallenge.microservico.pagamento.model.response;
 
 import java.math.BigDecimal;
 
@@ -11,11 +11,13 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class PagamentoResponse {
+public class HistoricoPagamentoResponse {
 
 	private Long numeroPagamento;
 	private Long numeroPedido;
+	private String descricao;
 	private String dataPagamento;
-	private Integer statusPagamento;
+	private String dataHistorico;
 	private BigDecimal valor;
+	private Integer numeroTentativas;
 }
