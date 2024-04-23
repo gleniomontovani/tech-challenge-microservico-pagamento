@@ -10,5 +10,5 @@ import br.com.postech.techchallenge.microservico.pagamento.entity.HistoricoPagam
 @Repository
 public interface HistoricoPagamentoRepository extends JpaRepository<HistoricoPagamento, Long>{
 	
-	List<HistoricoPagamento> findByPagamentoId(Long numeroPagamento);
+	List<HistoricoPagamento> findByPagamentoNumeroPedido(Long numeroPedido);
 }

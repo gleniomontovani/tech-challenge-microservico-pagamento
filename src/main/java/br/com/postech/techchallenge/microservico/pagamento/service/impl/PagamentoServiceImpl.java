@@ -1,5 +1,6 @@
 package br.com.postech.techchallenge.microservico.pagamento.service.impl;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -13,11 +14,13 @@ import br.com.postech.techchallenge.microservico.pagamento.entity.HistoricoPagam
 import br.com.postech.techchallenge.microservico.pagamento.entity.Pagamento;
 import br.com.postech.techchallenge.microservico.pagamento.enums.StatusPagamentoEnum;
 import br.com.postech.techchallenge.microservico.pagamento.exception.NotFoundException;
+import br.com.postech.techchallenge.microservico.pagamento.model.request.PagamentoRequest;
 import br.com.postech.techchallenge.microservico.pagamento.model.response.HistoricoPagamentoResponse;
 import br.com.postech.techchallenge.microservico.pagamento.model.response.PagamentoResponse;
 import br.com.postech.techchallenge.microservico.pagamento.repository.HistoricoPagamentoRepository;
 import br.com.postech.techchallenge.microservico.pagamento.repository.PagamentoRepository;
 import br.com.postech.techchallenge.microservico.pagamento.service.PagamentoService;
+import br.com.postech.techchallenge.microservico.pagamento.util.Constantes;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -58,7 +61,7 @@ public class PagamentoServiceImpl implements PagamentoService {
 
 	@Override
 	public List<HistoricoPagamentoResponse> listarHistoricoPagamentosPorPedido(Long numeroPedido) {
-		List<HistoricoPagamento> historicoPagamentosEntity = historicoPagamentoJpaRepository.findByPagamentoId(numeroPedido);
+		List<HistoricoPagamento> historicoPagamentosEntity = historicoPagamentoJpaRepository.findByPagamentoNumeroPedido(numeroPedido);
 		
 		MAPPER.typeMap(HistoricoPagamento.class, HistoricoPagamentoResponse.class)
 		  	.addMappings(mapperA -> 
@@ -73,5 +76,37 @@ public class PagamentoServiceImpl implements PagamentoService {
 		
 		return MAPPER.map(historicoPagamentosEntity, new TypeToken<List<HistoricoPagamentoResponse>>() {
 		}.getType());
+	}
+
+	@Override
+	public PagamentoResponse criarPagamento(PagamentoRequest pagamentoRequest) throws Exception {	
+		var pagamento = MAPPER.map(pagamentoRequest, Pagamento.class);
+		pagamento.setStatusPagamento(StatusPagamentoEnum.get(pagamentoRequest.statusPagamento()));
+		pagamento.setId(pagamentoRequest.numeroPagamento());
+
+		Integer tentativas = historicoPagamentoJpaRepository.findByPagamentoNumeroPedido(pagamento.getNumeroPedido()).stream()
+				.map(HistoricoPagamento::getNumeroTentativas).max(Integer::compare).orElse(0);
+		
+		// Obtem os valores para caso foi a terceira tentativa de pagamento,
+		String descricaoHistorico = ((tentativas < 2) ? Constantes.FAIL_TRY_PAYMENT : Constantes.SUCESS_MAKE_PAYMENT);
+		LocalDateTime dataPagamento = ((tentativas < 2) ? null : LocalDateTime.now());
+		Pagamento pagamentoEntity = null;
+		
+		// Faz a atualizacao do pagamento
+		pagamento.setDataPagamento(dataPagamento);
+		pagamento.setStatusPagamento(pagamento.getStatusPagamento());
+		pagamento.getHistoricoPagamento().add(HistoricoPagamento.adicionaHistorico(descricaoHistorico,
+				pagamento, dataPagamento, tentativas));
+		
+		pagamentoEntity = pagamentoJpaRepository.save(pagamento);
+		
+		MAPPER.typeMap(Pagamento.class, PagamentoResponse.class)
+			.addMappings(mapperA -> mapperA.using(new StatusPagamentoParaInteiroConverter())
+					.map(Pagamento::getStatusPagamento, PagamentoResponse::setStatusPagamento))
+			.addMappings(mapperC -> {
+				mapperC.map(src -> src.getId(), PagamentoResponse::setNumeroPagamento);
+		});
+		
+		return MAPPER.map(pagamentoEntity, PagamentoResponse.class);
 	}
 }
