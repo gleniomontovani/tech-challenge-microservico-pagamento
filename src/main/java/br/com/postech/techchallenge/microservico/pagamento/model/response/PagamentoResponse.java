@@ -18,4 +18,5 @@ public class PagamentoResponse {
 	private String dataPagamento;
 	private Integer statusPagamento;
 	private BigDecimal valor;
+	private String qrCodePix;
 }

@@ -1,6 +1,8 @@
 package br.com.postech.techchallenge.microservico.pagamento.service.impl;
 
+import java.nio.file.Path;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,6 +16,7 @@ import br.com.postech.techchallenge.microservico.pagamento.entity.HistoricoPagam
 import br.com.postech.techchallenge.microservico.pagamento.entity.Pagamento;
 import br.com.postech.techchallenge.microservico.pagamento.enums.StatusPagamentoEnum;
 import br.com.postech.techchallenge.microservico.pagamento.exception.NotFoundException;
+import br.com.postech.techchallenge.microservico.pagamento.model.DadosEnvioPix;
 import br.com.postech.techchallenge.microservico.pagamento.model.request.PagamentoRequest;
 import br.com.postech.techchallenge.microservico.pagamento.model.response.HistoricoPagamentoResponse;
 import br.com.postech.techchallenge.microservico.pagamento.model.response.PagamentoResponse;
@@ -21,6 +24,7 @@ import br.com.postech.techchallenge.microservico.pagamento.repository.HistoricoP
 import br.com.postech.techchallenge.microservico.pagamento.repository.PagamentoRepository;
 import br.com.postech.techchallenge.microservico.pagamento.service.PagamentoService;
 import br.com.postech.techchallenge.microservico.pagamento.util.Constantes;
+import br.com.postech.techchallenge.microservico.pagamento.util.QRCodePix;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -97,9 +101,21 @@ public class PagamentoServiceImpl implements PagamentoService {
 		pagamento.setStatusPagamento(pagamento.getStatusPagamento());
 		pagamento.getHistoricoPagamento().add(HistoricoPagamento.adicionaHistorico(descricaoHistorico,
 				pagamento, dataPagamento, tentativas));
+
+		final var dadosPix = new DadosEnvioPix(
+				Constantes.NOME_DESTINATARIO_PIX_QRCODE,
+				Constantes.CHAVE_DESTINATARIO_PIX_QRCODE, 
+				pagamento.getValor(),
+				Constantes.CIDADE_DESTINATARIO_PIX_QRCODE, 
+				String.valueOf(ZonedDateTime.now().toInstant().toEpochMilli()));
+
+        final var qrCodePix = new QRCodePix(dadosPix);
+        qrCodePix.save(Path.of(Constantes.IMAGEM_QRCODE_PATH));
 		
+        pagamento.setQrCodePix(qrCodePix.toString());
+        
 		pagamentoEntity = pagamentoJpaRepository.save(pagamento);
-		
+				
 		MAPPER.typeMap(Pagamento.class, PagamentoResponse.class)
 			.addMappings(mapperA -> mapperA.using(new StatusPagamentoParaInteiroConverter())
 					.map(Pagamento::getStatusPagamento, PagamentoResponse::setStatusPagamento))

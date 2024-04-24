@@ -53,6 +53,9 @@ public class Pagamento implements Serializable{
 	@Column(name = "valor", nullable = false, precision = 10, scale = 2)
 	private BigDecimal valor;
 	
+	@Column(name = "qr_code_pix", nullable = false)
+	private String qrCodePix;
+	
 	@OneToMany(mappedBy = "pagamento", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private List<HistoricoPagamento> historicoPagamento = new ArrayList<>();
 }

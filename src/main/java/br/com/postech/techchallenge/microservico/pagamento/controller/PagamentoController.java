@@ -44,9 +44,10 @@ public class PagamentoController {
     }
     
     @PostMapping
-	public ResponseEntity<String> criarPagamento(@RequestBody PagamentoRequest pagamentoRequest) {	
-		try {
-			pagamentoService.criarPagamento(pagamentoRequest);			
+	public ResponseEntity<PagamentoResponse> criarPagamento(@RequestBody PagamentoRequest pagamentoRequest) {	
+    	PagamentoResponse response = null;
+    	try {
+			response = pagamentoService.criarPagamento(pagamentoRequest);			
 		}catch (Exception e) {
 	        // Verifica se a exceção é uma DataIntegrityViolationException
 	        if (e instanceof DataIntegrityViolationException) {
@@ -58,6 +59,7 @@ public class PagamentoController {
 	        }
 	        throw new BusinessException("Não foi possivel atualizar o pagamento!");
 		}
-		return ResponseEntity.ok("Pagamento processado com sucesso!");
+    	
+		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
 }

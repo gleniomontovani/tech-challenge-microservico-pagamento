@@ -49,6 +49,13 @@ public class Constantes {
     public static final Locale LOCALE_PT_BR 							= new Locale("pt", "BR");
     public static final String UTF_8 									= "UTF-8";
     public static final String CONTENT_HTML								= "text/html";
+    public static final String MD5_ALGORITHM_TYPE 						= "MD5";
+    
+    public static final String IMAGEM_QRCODE_PATH						= "qrcode.png";
+    public static final String NOME_DESTINATARIO_PIX_QRCODE				= "Glenio Montovani";
+    public static final String CHAVE_DESTINATARIO_PIX_QRCODE			= "89250362153";
+    public static final String CIDADE_DESTINATARIO_PIX_QRCODE			= "Goiania";
+    public static final String DESCRICAO_PIX_QRCODE						= "PIX em Java";
     
     public static final BigDecimal VALOR_MINIMO_OZ 						= BigDecimal.valueOf(0.50);	
     public static final BigDecimal PLANO_ASSINATURA_PARA_CARTAO			= BigDecimal.valueOf(300);
@@ -111,6 +118,7 @@ public class Constantes {
 	public static final String STRING_ABRE_COLCHETE 					= "[";
 	public static final String STRING_FECHA_COLCHETE 					= "]";
 	public static final String STRING_VIRGULA 							= ",";
+	public static final String STRING_UNDERLINE							= "_";
 	public static final int LENGTH_CNPJ_BASE 							= 8;
     
     public static final int QTDE_PADRAO_CASAS_DECIMAIS 					= 2;
