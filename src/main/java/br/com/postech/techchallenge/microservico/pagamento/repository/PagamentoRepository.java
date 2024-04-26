@@ -15,4 +15,6 @@ public interface PagamentoRepository extends JpaRepository<Pagamento, Long>{
 	Optional<Pagamento> findByNumeroPedido(Long numeroPedido);
 	
 	List<Pagamento> findByStatusPagamentoIn(List<StatusPagamentoEnum> statusPagamentos);
+	
+	Optional<Pagamento> findByNumeroPedidoAndQrCodePixAndDataPagamentoIsNull(Long numeroPedido, String qrCodePix);
 }

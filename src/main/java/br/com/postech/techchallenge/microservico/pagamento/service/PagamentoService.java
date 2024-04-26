@@ -14,5 +14,7 @@ public interface PagamentoService {
 	
 	List<HistoricoPagamentoResponse> listarHistoricoPagamentosPorPedido(Long numeroPedido);
 	
-	PagamentoResponse criarPagamento(PagamentoRequest pagamento) throws Exception;
+	PagamentoResponse criarPagamento(PagamentoRequest pagamentoRequest) throws Exception;
+	
+	PagamentoResponse atualizaPagamento(PagamentoRequest pagamentoRequest) throws Exception;
 }

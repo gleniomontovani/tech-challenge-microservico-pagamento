@@ -15,6 +15,7 @@ import br.com.postech.techchallenge.microservico.pagamento.converts.StatusPagame
 import br.com.postech.techchallenge.microservico.pagamento.entity.HistoricoPagamento;
 import br.com.postech.techchallenge.microservico.pagamento.entity.Pagamento;
 import br.com.postech.techchallenge.microservico.pagamento.enums.StatusPagamentoEnum;
+import br.com.postech.techchallenge.microservico.pagamento.exception.BusinessException;
 import br.com.postech.techchallenge.microservico.pagamento.exception.NotFoundException;
 import br.com.postech.techchallenge.microservico.pagamento.model.DadosEnvioPix;
 import br.com.postech.techchallenge.microservico.pagamento.model.request.PagamentoRequest;
@@ -98,7 +99,6 @@ public class PagamentoServiceImpl implements PagamentoService {
 		
 		// Faz a atualizacao do pagamento
 		pagamento.setDataPagamento(dataPagamento);
-		pagamento.setStatusPagamento(pagamento.getStatusPagamento());
 		pagamento.getHistoricoPagamento().add(HistoricoPagamento.adicionaHistorico(descricaoHistorico,
 				pagamento, dataPagamento, tentativas));
 
@@ -116,6 +116,39 @@ public class PagamentoServiceImpl implements PagamentoService {
         
 		pagamentoEntity = pagamentoJpaRepository.save(pagamento);
 				
+		MAPPER.typeMap(Pagamento.class, PagamentoResponse.class)
+			.addMappings(mapperA -> mapperA.using(new StatusPagamentoParaInteiroConverter())
+					.map(Pagamento::getStatusPagamento, PagamentoResponse::setStatusPagamento))
+			.addMappings(mapperC -> {
+				mapperC.map(src -> src.getId(), PagamentoResponse::setNumeroPagamento);
+		});
+		
+		return MAPPER.map(pagamentoEntity, PagamentoResponse.class);
+	}
+
+	@Override
+	public PagamentoResponse atualizaPagamento(PagamentoRequest pagamentoRequest) throws Exception {
+		var pagamento = MAPPER.map(pagamentoRequest, Pagamento.class);
+		pagamento.setStatusPagamento(StatusPagamentoEnum.get(pagamentoRequest.statusPagamento()));
+		pagamento.setId(pagamentoRequest.numeroPagamento());
+
+		Integer tentativas = historicoPagamentoJpaRepository.findByPagamentoNumeroPedido(pagamento.getNumeroPedido()).stream()
+				.map(HistoricoPagamento::getNumeroTentativas).max(Integer::compare).orElse(0);
+		
+		// Faz a atualizacao do pagamento		
+		Pagamento pagamentoEntity = pagamentoJpaRepository
+				.findByNumeroPedidoAndQrCodePixAndDataPagamentoIsNull(pagamento.getNumeroPedido(), pagamento.getQrCodePix())
+				.map(pagEntity -> {
+					pagEntity.setDataPagamento(LocalDateTime.now());
+					pagEntity.setStatusPagamento(pagamento.getStatusPagamento());
+					pagEntity.getHistoricoPagamento().add(HistoricoPagamento.adicionaHistorico(Constantes.SUCESS_MAKE_PAYMENT,
+							pagEntity, LocalDateTime.now(), tentativas));
+
+					return pagamentoJpaRepository.save(pagEntity);
+				}).orElseThrow(()-> new BusinessException("Pagamento não encontrado ou já processado!"));
+		
+		//TODO - Aqui vou ter que fazer a requisição do microserviço de produção para alterar o status da produção do pedido.
+		
 		MAPPER.typeMap(Pagamento.class, PagamentoResponse.class)
 			.addMappings(mapperA -> mapperA.using(new StatusPagamentoParaInteiroConverter())
 					.map(Pagamento::getStatusPagamento, PagamentoResponse::setStatusPagamento))
