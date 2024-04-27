@@ -1,7 +1,5 @@
 package br.com.postech.techchallenge.microservico.pagamento.controller;
 
-import java.util.List;
-
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.postech.techchallenge.microservico.pagamento.exception.BusinessException;
 import br.com.postech.techchallenge.microservico.pagamento.model.request.PagamentoRequest;
-import br.com.postech.techchallenge.microservico.pagamento.model.response.HistoricoPagamentoResponse;
 import br.com.postech.techchallenge.microservico.pagamento.model.response.PagamentoResponse;
 import br.com.postech.techchallenge.microservico.pagamento.service.PagamentoService;
 import lombok.RequiredArgsConstructor;
@@ -36,15 +33,6 @@ public class PagamentoController {
 		PagamentoResponse pagamento = pagamentoService.consultarStatusPagamentoPorPedido(numeroPedido);
 
 		return new ResponseEntity<>(pagamento, HttpStatus.OK);
-	}
-
-	@GetMapping(path = "/historico/{numeroPedido}", produces = MediaType.APPLICATION_JSON)
-	public ResponseEntity<List<HistoricoPagamentoResponse>> consultarHistoricoPagamentoPorPedido(
-			@PathVariable Long numeroPedido) throws Exception {
-		List<HistoricoPagamentoResponse> historicoPagamento = pagamentoService
-				.listarHistoricoPagamentosPorPedido(numeroPedido);
-
-		return new ResponseEntity<>(historicoPagamento, HttpStatus.OK);
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)

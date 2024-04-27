@@ -3,11 +3,9 @@ package br.com.postech.techchallenge.microservico.pagamento.util;
 import java.math.BigDecimal;
 import java.util.Locale;
 
-public class Constantes {
+public class Constantes {	
 	public static final String SERVER_NAME								= "TECH CHALLENGE - POS-TECH";
-	
-	public static final Object OBJECT_NULL								= null;
-		
+			
 	public static final String ENUM_PACKAGE 							= "br.com.postech.techchallenge.microservico.pagamento.enums.";
 	public static final String ASSOCIACAO_TYPE 							= "br.com.postech.techchallenge.microservico.pagamento.enums.AssociacaoType";
 	public static final String ENUM_CLASS_NAME 							= "enumClassName";
@@ -123,8 +121,5 @@ public class Constantes {
     
     public static final int QTDE_PADRAO_CASAS_DECIMAIS 					= 2;
 	public static final int PRIMEIRO_INTEIRO_VALIDO 					= 0;
-	public static final int PRIMEIRO_INTEIRO_DIFERENTE_ZERO 			= 1;
-	
-	public static final int QTDE_CONVITE_ACEITO_INSENCAO_PGT_CARD 		= 5;
-	
+	public static final int PRIMEIRO_INTEIRO_DIFERENTE_ZERO 			= 1;		
 }

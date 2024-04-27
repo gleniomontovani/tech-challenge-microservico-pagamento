@@ -37,8 +37,7 @@ public class ModelMapperConfiguration implements ContextResolver<ModelMapper> {
 		modelMapper.getConfiguration().setFieldMatchingEnabled(true);
 		modelMapper.getConfiguration().setFieldAccessLevel(AccessLevel.PRIVATE);
 		modelMapper.addConverter(converterStringToString());
-//		mapEntityToResponse(modelMapper);
-		
+	
 		return modelMapper;
 	}
 	
@@ -49,12 +48,6 @@ public class ModelMapperConfiguration implements ContextResolver<ModelMapper> {
 			}
 		};
 	}
-	
-//	private static void mapEntityToResponse(final ModelMapper modelMapper) {
-//		modelMapper.createTypeMap(Cliente.class, ClienteResponse.class).addMappings(mapper -> {
-//			  mapper.map(src -> src.getId(), ClienteResponse::setNumero);
-//		});
-//	}
 	
 	public static <S, D> Converter <S, D> converterWithDestinationSupplier(Supplier<? extends D> supplier) {
 	    return ctx -> ctx.getMappingEngine().map(ctx.create(ctx.getSource(), supplier.get()));

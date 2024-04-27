@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.hibernate.annotations.Parameter;
 import org.hibernate.annotations.Type;
@@ -21,16 +22,20 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "pagamento")
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
+@Generated 
 public class Pagamento implements Serializable{
 	private static final long serialVersionUID = 1L;
 
@@ -57,5 +62,13 @@ public class Pagamento implements Serializable{
 	private String qrCodePix;
 	
 	@OneToMany(mappedBy = "pagamento", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private List<HistoricoPagamento> historicoPagamento = new ArrayList<>();
+	private List<HistoricoPagamento> historicoPagamento;
+	
+	public void adicionaHistorico(HistoricoPagamento historicoPagamento) {
+		if (Objects.isNull(this.historicoPagamento)) {
+			this.historicoPagamento = new ArrayList<HistoricoPagamento>();
+		}
+		
+		this.historicoPagamento.add(historicoPagamento);
+	}
 }
