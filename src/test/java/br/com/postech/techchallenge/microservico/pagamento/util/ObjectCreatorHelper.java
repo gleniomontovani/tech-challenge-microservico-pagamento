@@ -9,7 +9,7 @@ import br.com.postech.techchallenge.microservico.pagamento.entity.Pagamento;
 import br.com.postech.techchallenge.microservico.pagamento.enums.StatusPagamentoEnum;
 import br.com.postech.techchallenge.microservico.pagamento.model.request.PagamentoRequest;
 
-public abstract class ObjectCreatorHelper {
+public class ObjectCreatorHelper {
 
 	public static Pagamento obterPagamento() {
 		return Pagamento.builder()

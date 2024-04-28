@@ -70,7 +70,7 @@ public class PagamentoServiceImpl implements PagamentoService {
 	}
 
 	@Override
-	public PagamentoResponse criarPagamento(PagamentoRequest pagamentoRequest) throws Exception {	
+	public PagamentoResponse criarPagamento(PagamentoRequest pagamentoRequest) throws BusinessException {	
 		var pagamento = MAPPER.map(pagamentoRequest, Pagamento.class);
 		pagamento.setStatusPagamento(StatusPagamentoEnum.get(pagamentoRequest.statusPagamento()));
 		pagamento.setId(pagamentoRequest.numeroPagamento());
@@ -103,7 +103,7 @@ public class PagamentoServiceImpl implements PagamentoService {
 	}
 
 	@Override
-	public PagamentoResponse atualizaPagamento(PagamentoRequest pagamentoRequest) throws Exception {
+	public PagamentoResponse atualizaPagamento(PagamentoRequest pagamentoRequest) throws BusinessException {
 		var pagamento = MAPPER.map(pagamentoRequest, Pagamento.class);
 		pagamento.setStatusPagamento(StatusPagamentoEnum.get(pagamentoRequest.statusPagamento()));
 		pagamento.setId(pagamentoRequest.numeroPagamento());

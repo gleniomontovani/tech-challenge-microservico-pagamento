@@ -2,7 +2,6 @@ package br.com.postech.techchallenge.microservico.pagamento.controller;
 
 import javax.ws.rs.core.MediaType;
 
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,12 +17,10 @@ import br.com.postech.techchallenge.microservico.pagamento.model.request.Pagamen
 import br.com.postech.techchallenge.microservico.pagamento.model.response.PagamentoResponse;
 import br.com.postech.techchallenge.microservico.pagamento.service.PagamentoService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/v1/pagamentos")
 @RequiredArgsConstructor
-@Slf4j
 public class PagamentoController {
 	private final PagamentoService pagamentoService;
 
@@ -38,21 +35,7 @@ public class PagamentoController {
 	@PostMapping(consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
 	public ResponseEntity<PagamentoResponse> criarPagamento(@RequestBody PagamentoRequest pagamentoRequest) {
 		PagamentoResponse response = null;
-		try {
-			response = pagamentoService.criarPagamento(pagamentoRequest);
-		} catch (Exception e) {
-			String msgError = null;
-			// Verifica se a exceção é uma DataIntegrityViolationException
-			if (e instanceof DataIntegrityViolationException) {
-				// Lidar com a exceção DataIntegrityViolationException
-				msgError = "Já existe este registro.";
-			} else {
-				// Lidar com outras exceções, se necessário
-				msgError = "Não foi possivel criar o pagamento!";
-			}
-			log.error(msgError);
-			throw new BusinessException(msgError);
-		}
+		response = pagamentoService.criarPagamento(pagamentoRequest);
 
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
@@ -61,21 +44,7 @@ public class PagamentoController {
 	public ResponseEntity<PagamentoResponse> atualizaPagamento(@RequestBody PagamentoRequest pagamentoRequest)
 			throws BusinessException {
 		PagamentoResponse response = null;
-		try {
-			response = pagamentoService.atualizaPagamento(pagamentoRequest);
-		} catch (Exception e) {
-			String msgError = null;
-			// Verifica se a exceção é uma DataIntegrityViolationException
-			if (e instanceof DataIntegrityViolationException) {
-				// Lidar com a exceção DataIntegrityViolationException
-				msgError = "Já existe este registro.";
-			} else {
-				// Lidar com outras exceções, se necessário
-				msgError = e.getMessage();
-			}
-			log.error(msgError);
-			throw new BusinessException(msgError);
-		}
+		response = pagamentoService.atualizaPagamento(pagamentoRequest);
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

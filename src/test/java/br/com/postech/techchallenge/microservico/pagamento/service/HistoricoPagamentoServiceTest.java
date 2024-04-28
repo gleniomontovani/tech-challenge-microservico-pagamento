@@ -1,4 +1,4 @@
-package br.com.postech.techchallenge.microservico.pagamento.service.impl;
+package br.com.postech.techchallenge.microservico.pagamento.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -16,11 +16,11 @@ import org.mockito.MockitoAnnotations;
 
 import br.com.postech.techchallenge.microservico.pagamento.model.response.HistoricoPagamentoResponse;
 import br.com.postech.techchallenge.microservico.pagamento.repository.HistoricoPagamentoRepository;
-import br.com.postech.techchallenge.microservico.pagamento.service.HistoricoPagamentoService;
+import br.com.postech.techchallenge.microservico.pagamento.service.impl.HistoricoPagamentoServiceImpl;
 import br.com.postech.techchallenge.microservico.pagamento.util.ObjectCreatorHelper;
 
-class HistoricoPagamentoServiceImplTest {
-	
+class HistoricoPagamentoServiceTest {
+
 	private HistoricoPagamentoService historicoPagamentoService;
 	@Mock
 	private HistoricoPagamentoRepository historicoPagamentoRepository;
@@ -62,4 +62,5 @@ class HistoricoPagamentoServiceImplTest {
 				assertThat(historico).isInstanceOf(HistoricoPagamentoResponse.class);
 			});
 	}
+
 }

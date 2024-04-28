@@ -2,6 +2,7 @@ package br.com.postech.techchallenge.microservico.pagamento.service;
 
 import java.util.List;
 
+import br.com.postech.techchallenge.microservico.pagamento.exception.BusinessException;
 import br.com.postech.techchallenge.microservico.pagamento.model.request.PagamentoRequest;
 import br.com.postech.techchallenge.microservico.pagamento.model.response.PagamentoResponse;
 
@@ -11,7 +12,7 @@ public interface PagamentoService {
 	
 	List<PagamentoResponse> listarPagamentosPendentes();
 	
-	PagamentoResponse criarPagamento(PagamentoRequest pagamentoRequest) throws Exception;
+	PagamentoResponse criarPagamento(PagamentoRequest pagamentoRequest) throws BusinessException;
 	
-	PagamentoResponse atualizaPagamento(PagamentoRequest pagamentoRequest) throws Exception;
+	PagamentoResponse atualizaPagamento(PagamentoRequest pagamentoRequest) throws BusinessException;
 }
