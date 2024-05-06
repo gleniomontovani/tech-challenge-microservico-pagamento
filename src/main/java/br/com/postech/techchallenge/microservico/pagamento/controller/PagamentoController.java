@@ -34,8 +34,7 @@ public class PagamentoController {
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
 	public ResponseEntity<PagamentoResponse> criarPagamento(@RequestBody PagamentoRequest pagamentoRequest) {
-		PagamentoResponse response = null;
-		response = pagamentoService.criarPagamento(pagamentoRequest);
+		PagamentoResponse response = pagamentoService.criarPagamento(pagamentoRequest);
 
 		return new ResponseEntity<>(response, HttpStatus.CREATED);
 	}
@@ -43,8 +42,7 @@ public class PagamentoController {
 	@PutMapping(consumes = MediaType.APPLICATION_JSON, produces = MediaType.APPLICATION_JSON)
 	public ResponseEntity<PagamentoResponse> atualizaPagamento(@RequestBody PagamentoRequest pagamentoRequest)
 			throws BusinessException {
-		PagamentoResponse response = null;
-		response = pagamentoService.atualizaPagamento(pagamentoRequest);
+		PagamentoResponse response = pagamentoService.atualizaPagamento(pagamentoRequest);
 
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
