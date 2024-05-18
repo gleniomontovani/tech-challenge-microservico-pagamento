@@ -1,4 +1,4 @@
-package br.com.postech.techchallenge.microservico.pagamento.service;
+package br.com.postech.techchallenge.microservico.pagamento.unit.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -24,6 +24,7 @@ import br.com.postech.techchallenge.microservico.pagamento.entity.Pagamento;
 import br.com.postech.techchallenge.microservico.pagamento.model.response.PagamentoResponse;
 import br.com.postech.techchallenge.microservico.pagamento.repository.HistoricoPagamentoRepository;
 import br.com.postech.techchallenge.microservico.pagamento.repository.PagamentoRepository;
+import br.com.postech.techchallenge.microservico.pagamento.service.PagamentoService;
 import br.com.postech.techchallenge.microservico.pagamento.service.impl.PagamentoServiceImpl;
 import br.com.postech.techchallenge.microservico.pagamento.service.integracao.ApiMicroServiceProducao;
 import br.com.postech.techchallenge.microservico.pagamento.util.ObjectCreatorHelper;

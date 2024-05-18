@@ -3,6 +3,7 @@ package br.com.postech.techchallenge.microservico.pagamento.service.impl;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -73,26 +74,30 @@ public class PagamentoServiceImpl implements PagamentoService {
 
 	@Override
 	public PagamentoResponse criarPagamento(PagamentoRequest pagamentoRequest) throws BusinessException {
-		var pagamento = MAPPER.map(pagamentoRequest, Pagamento.class);
-		pagamento.setStatusPagamento(StatusPagamentoEnum.get(pagamentoRequest.statusPagamento()));
-		pagamento.setId(pagamentoRequest.numeroPagamento());
-
-		Integer tentativas = historicoPagamentoJpaRepository.findByPagamentoNumeroPedido(pagamento.getNumeroPedido())
-				.stream().map(HistoricoPagamento::getNumeroTentativas).max(Integer::compare).orElse(0);
-
-		Pagamento pagamentoEntity = null;
-
-		// Faz a atualizacao do pagamento
-		pagamento.adicionaHistorico(
-				HistoricoPagamento.adicionaHistorico(Constantes.AWAITING_PAYMENT, pagamento, null, tentativas));
-
-		pagamento.setQrCodePix(Utilitario.gerarQrCodePix(pagamento.getValor()));
-
-		pagamentoEntity = pagamentoJpaRepository.save(pagamento);
-
-		apiMicroServiceProducao.salvarProducao(new ProducaoRequest(pagamentoEntity.getNumeroPedido(),
-				Constantes.ORDER_OBSERVATION, SituacaoProducaoEnum.RECEBIDO.getValue()));
-
+		Pagamento pagamentoEntity = pagamentoJpaRepository
+			.findByNumeroPedido(pagamentoRequest.numeroPedido())
+			.orElse(null);
+		
+		if (Objects.isNull(pagamentoEntity)) {
+			var pagamento = MAPPER.map(pagamentoRequest, Pagamento.class);
+			pagamento.setStatusPagamento(StatusPagamentoEnum.get(pagamentoRequest.statusPagamento()));
+			pagamento.setId(pagamentoRequest.numeroPagamento());
+	
+			Integer tentativas = historicoPagamentoJpaRepository.findByPagamentoNumeroPedido(pagamento.getNumeroPedido())
+					.stream().map(HistoricoPagamento::getNumeroTentativas).max(Integer::compare).orElse(0);
+	
+			// Faz a atualizacao do pagamento
+			pagamento.adicionaHistorico(
+					HistoricoPagamento.adicionaHistorico(Constantes.AWAITING_PAYMENT, pagamento, null, tentativas));
+	
+			pagamento.setQrCodePix(Utilitario.gerarQrCodePix(pagamento.getValor()));
+	
+			pagamentoEntity = pagamentoJpaRepository.save(pagamento);
+	
+			apiMicroServiceProducao.salvarProducao(new ProducaoRequest(pagamentoEntity.getNumeroPedido(),
+					Constantes.ORDER_OBSERVATION, SituacaoProducaoEnum.RECEBIDO.getValue()));
+		}
+		
 		MAPPER.typeMap(Pagamento.class, PagamentoResponse.class)
 				.addMappings(mapperA -> mapperA.using(new StatusPagamentoParaInteiroConverter())
 						.map(Pagamento::getStatusPagamento, PagamentoResponse::setStatusPagamento))

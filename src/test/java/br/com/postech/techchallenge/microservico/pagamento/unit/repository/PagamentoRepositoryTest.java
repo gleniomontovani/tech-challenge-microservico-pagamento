@@ -1,4 +1,4 @@
-package br.com.postech.techchallenge.microservico.pagamento.repository;
+package br.com.postech.techchallenge.microservico.pagamento.unit.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -22,6 +22,7 @@ import org.mockito.MockitoAnnotations;
 
 import br.com.postech.techchallenge.microservico.pagamento.entity.Pagamento;
 import br.com.postech.techchallenge.microservico.pagamento.enums.StatusPagamentoEnum;
+import br.com.postech.techchallenge.microservico.pagamento.repository.PagamentoRepository;
 import br.com.postech.techchallenge.microservico.pagamento.util.ObjectCreatorHelper;
 import br.com.postech.techchallenge.microservico.pagamento.util.Utilitario;
 

@@ -1,4 +1,4 @@
-package br.com.postech.techchallenge.microservico.pagamento.controller;
+package br.com.postech.techchallenge.microservico.pagamento.unit.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
+import br.com.postech.techchallenge.microservico.pagamento.controller.PagamentoController;
 import br.com.postech.techchallenge.microservico.pagamento.handler.RestHandlerException;
 import br.com.postech.techchallenge.microservico.pagamento.model.request.PagamentoRequest;
 import br.com.postech.techchallenge.microservico.pagamento.model.response.PagamentoResponse;

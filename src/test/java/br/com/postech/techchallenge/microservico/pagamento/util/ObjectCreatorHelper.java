@@ -26,6 +26,10 @@ public class ObjectCreatorHelper {
 		return new PagamentoRequest(1L, 1L, 1, BigDecimal.valueOf(100), qrCodePix);
 	}
 	
+	public static PagamentoRequest obterRequisicaoPagamentoSemID() {
+		return new PagamentoRequest(null, 755L, 1, BigDecimal.valueOf(100), Utilitario.gerarQrCodePix(BigDecimal.valueOf(100L)));
+	}
+	
 	public static HistoricoPagamento obterHistoricoPagamento() {
 		var pagamento = obterPagamento();
 		pagamento.setId(1L);

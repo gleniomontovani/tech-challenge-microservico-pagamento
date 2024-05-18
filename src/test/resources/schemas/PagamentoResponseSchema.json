@@ -1,0 +1,33 @@
+{
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
+    "$id": "http://example.com/example.json",
+    "type": "object",
+    "required": [
+        "numeroPagamento",
+        "numeroPedido",
+        "dataPagamento",
+        "statusPagamento",
+        "valor",
+        "qrCodePix"
+    ],
+    "properties": {
+        "numeroPagamento": {
+            "type": [ "number", "null" ]
+        },
+        "numeroPedido": {
+            "type": [ "number", "null" ]
+        },
+        "dataPagamento": {
+            "type": [ "string", "null" ]
+        },
+        "statusPagamento": {
+            "type": [ "number", "null" ]
+        },
+        "valor": {
+            "type": [ "number", "null" ]
+        },
+        "qrCodePix": {
+            "type": [ "string", "null" ]
+        }
+    }
+}
