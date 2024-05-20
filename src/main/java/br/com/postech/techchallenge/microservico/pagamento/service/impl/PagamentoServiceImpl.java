@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.postech.techchallenge.microservico.pagamento.configuration.ModelMapperConfiguration;
 import br.com.postech.techchallenge.microservico.pagamento.converts.StatusPagamentoParaInteiroConverter;
+import br.com.postech.techchallenge.microservico.pagamento.domain.PagamentoDocumento;
 import br.com.postech.techchallenge.microservico.pagamento.entity.HistoricoPagamento;
 import br.com.postech.techchallenge.microservico.pagamento.entity.Pagamento;
 import br.com.postech.techchallenge.microservico.pagamento.enums.SituacaoProducaoEnum;
@@ -20,6 +21,7 @@ import br.com.postech.techchallenge.microservico.pagamento.exception.NotFoundExc
 import br.com.postech.techchallenge.microservico.pagamento.model.request.PagamentoRequest;
 import br.com.postech.techchallenge.microservico.pagamento.model.response.PagamentoResponse;
 import br.com.postech.techchallenge.microservico.pagamento.repository.HistoricoPagamentoRepository;
+import br.com.postech.techchallenge.microservico.pagamento.repository.PagamentoMongoRepository;
 import br.com.postech.techchallenge.microservico.pagamento.repository.PagamentoRepository;
 import br.com.postech.techchallenge.microservico.pagamento.service.PagamentoService;
 import br.com.postech.techchallenge.microservico.pagamento.service.integracao.ApiMicroServiceProducao;
@@ -37,22 +39,28 @@ public class PagamentoServiceImpl implements PagamentoService {
 
 	private final PagamentoRepository pagamentoJpaRepository;
 	private final HistoricoPagamentoRepository historicoPagamentoJpaRepository;
+	private final PagamentoMongoRepository pagamentoMongoRepository;
 	private final ApiMicroServiceProducao apiMicroServiceProducao;
 
 	@Override
 	public PagamentoResponse consultarStatusPagamentoPorPedido(Long numeroPedido) {
-		Pagamento pagamentoEntity = pagamentoJpaRepository.findByNumeroPedido(numeroPedido)
-				.orElseThrow(() -> new NotFoundException("Pedido não encontrado!"));
+		var pagamentoDocumento = pagamentoMongoRepository.findByNumeroPedido(numeroPedido);
+		if(!pagamentoDocumento.isPresent()) {
+			Pagamento pagamentoEntity = pagamentoJpaRepository.findByNumeroPedido(numeroPedido)
+					.orElseThrow(() -> new NotFoundException("Pedido não encontrado!"));
 
-		MAPPER.typeMap(Pagamento.class, PagamentoResponse.class)
-				.addMappings(mapperA -> mapperA.using(new StatusPagamentoParaInteiroConverter())
-						.map(Pagamento::getStatusPagamento, PagamentoResponse::setStatusPagamento))
-				.addMappings(mapperB -> mapperB.map(src -> src.getNumeroPedido(), PagamentoResponse::setNumeroPedido))
-				.addMappings(mapperC -> {
-					mapperC.map(src -> src.getId(), PagamentoResponse::setNumeroPagamento);
-				});
+			MAPPER.typeMap(Pagamento.class, PagamentoResponse.class)
+					.addMappings(mapperA -> mapperA.using(new StatusPagamentoParaInteiroConverter())
+							.map(Pagamento::getStatusPagamento, PagamentoResponse::setStatusPagamento))
+					.addMappings(mapperB -> mapperB.map(src -> src.getNumeroPedido(), PagamentoResponse::setNumeroPedido))
+					.addMappings(mapperC -> {
+						mapperC.map(src -> src.getId(), PagamentoResponse::setNumeroPagamento);
+					});
 
-		return MAPPER.map(pagamentoEntity, PagamentoResponse.class);
+			return MAPPER.map(pagamentoEntity, PagamentoResponse.class);
+		}
+		
+		return MAPPER.map(pagamentoDocumento, PagamentoResponse.class);
 	}
 
 	@Override
@@ -104,8 +112,13 @@ public class PagamentoServiceImpl implements PagamentoService {
 				.addMappings(mapperB -> {
 					mapperB.map(src -> src.getId(), PagamentoResponse::setNumeroPagamento);
 				});
+		
+		var pagamentoResponse = MAPPER.map(pagamentoEntity, PagamentoResponse.class);
+		var pagamentoDocumento = MAPPER.map(pagamentoResponse, PagamentoDocumento.class);
 
-		return MAPPER.map(pagamentoEntity, PagamentoResponse.class);
+		pagamentoMongoRepository.save(pagamentoDocumento);
+		
+		return pagamentoResponse;
 	}
 
 	@Override
@@ -139,7 +152,13 @@ public class PagamentoServiceImpl implements PagamentoService {
 				.addMappings(mapperC -> {
 					mapperC.map(src -> src.getId(), PagamentoResponse::setNumeroPagamento);
 				});
+		
+		var pagamentoResponse = MAPPER.map(pagamentoEntity, PagamentoResponse.class);
+		var pagamentoDocumento = MAPPER.map(pagamentoResponse, PagamentoDocumento.class);
 
-		return MAPPER.map(pagamentoEntity, PagamentoResponse.class);
+		pagamentoMongoRepository.save(pagamentoDocumento);
+
+		return pagamentoResponse;
 	}
+
 }

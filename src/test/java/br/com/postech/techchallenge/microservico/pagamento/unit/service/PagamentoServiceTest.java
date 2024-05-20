@@ -23,6 +23,7 @@ import org.mockito.MockitoAnnotations;
 import br.com.postech.techchallenge.microservico.pagamento.entity.Pagamento;
 import br.com.postech.techchallenge.microservico.pagamento.model.response.PagamentoResponse;
 import br.com.postech.techchallenge.microservico.pagamento.repository.HistoricoPagamentoRepository;
+import br.com.postech.techchallenge.microservico.pagamento.repository.PagamentoMongoRepository;
 import br.com.postech.techchallenge.microservico.pagamento.repository.PagamentoRepository;
 import br.com.postech.techchallenge.microservico.pagamento.service.PagamentoService;
 import br.com.postech.techchallenge.microservico.pagamento.service.impl.PagamentoServiceImpl;
@@ -37,6 +38,8 @@ class PagamentoServiceTest {
 	@Mock
 	private HistoricoPagamentoRepository historicoPagamentoRepository;
 	@Mock
+	private PagamentoMongoRepository pagamentoMongoRepository;
+	@Mock
 	private ApiMicroServiceProducao apiMicroServiceProducao;
 
 	AutoCloseable openMocks;
@@ -44,7 +47,8 @@ class PagamentoServiceTest {
 	@BeforeEach
 	void setUp() {
 		openMocks = MockitoAnnotations.openMocks(this);
-		pagamentoService = new PagamentoServiceImpl(pagamentoRepository, historicoPagamentoRepository, apiMicroServiceProducao);
+		pagamentoService = new PagamentoServiceImpl(pagamentoRepository, historicoPagamentoRepository,
+				pagamentoMongoRepository, apiMicroServiceProducao);
 	}
 	
 	@AfterEach
